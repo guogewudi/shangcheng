@@ -1,0 +1,68 @@
+server:
+  port: 12090
+spring:
+
+  application:
+    name: users
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://39.96.34.25:3306/foodie?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: admin
+  redis:
+    database: 3
+    host: 127.0.0.1
+    port: 6379
+    # password:
+    # 连接超时时间
+    timeout: 10000
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka
+  instance:
+    prefer-ip-address: true
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:  # 全局的
+        connectTimeout: 2000  # 默认的连接超时时间是 10s
+        readTimeout: 5000
+      eureka-client-coupon-template:  # 单独服务的配置
+        connectTimeout: 3000  # 默认的连接超时时间是 10s
+        readTimeout: 5000
+############################################################
+#
+# mybatis 配置
+#
+############################################################
+mybatis:
+  type-aliases-package: com.guoyuhang.pojo          # 所有POJO类所在包路径
+  mapper-locations: classpath:mapper/*.xml      # mapper映射文件
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+############################################################
+#
+# mybatis mapper 配置
+#
+############################################################
+# 通用 Mapper 配置
+mapper:
+  mappers: com.guoyuhang.my.mapper.MyMapper
+  not-empty: false    # 在进行数据库操作的的时候，判断表达式 username != null, 是否追加 username != ''
+  identity: MYSQL
+#hystrix 配置
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        timeout:
+#          #如果enabled设置为false，则请求超时交给ribbon控制
+#          enabled: true
+#        isolation:
+#          strategy: SEMAPHORE
